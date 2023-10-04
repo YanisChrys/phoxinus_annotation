@@ -1,5 +1,7 @@
 # **Genome Annotation Pipeline**
 
+This is a repeat and gene annotation pipeline written in [snakemake](https://snakemake.readthedocs.io/en/stable/) and inspired by the [genofish annotation pipeline](https://www.sigenae.org/project_support/Genofish.html) that was developped to generate the annotation of a *Phoxinus sp.* genome assembly but can be used for many other vertebrate genomes as well and the output can be as sophisticated as your input databases are. This pipeline can provide a user-friendly and easy to run annotation pipeline with a lot of added functionalities and customizations that can be controlled from inside the *`config/config.yaml`*. The makefiles should ideally only be edited in case of a major program installation difference.
+
 ## **Table of Contents**
 - [Input](#input)
 - [Dependencies](#dependencies)
@@ -18,7 +20,6 @@ All inputs need to be specified in the *`config/config.yaml`* file.
 - Absolute path to a protein database as a `{filename}.fasta` file.
 - Dfam curated species name as a string or absolute path to your own curated repeat library. The pipeline can deal with either case.
 - An augustus_custom_extrinsic.cfg files placed inside the `./utils` library and a gm_key for Genemark placed inside the user's home directory.
-- 
 
 ### RNA-seq and protein sequences for BRAKER3
 
@@ -41,7 +42,7 @@ and unpack them with:
 fastq-dump --split-files path/to/YOUR_SRA
 ```
 
-In case you don't have your own sequencing data, or your data is not sufficient, and you need to use either RNA or protein evidence input for BRAKER3 it is advized to curate your own datasets and avoid redundancy in the sequences as much as possible.
+In case you don't have your own sequencing data, or your data is not sufficient, and you need to use either RNA or protein evidence input for BRAKER3, it is advized to curate your own datasets and avoid redundancy in the sequences as much as possible.
 
 - Alternatively, BRAKER3 provides its own set of example data for running BRAKER3 in EP and ET modes which can be accessed from the [BRAKER github page](https://github.com/Gaius-Augustus/BRAKER/tree/master/example).
 
@@ -51,7 +52,7 @@ This pipeline allows you to run BRAKER3 with any datatype you have. For more, se
 
 The following packages need to be set up separately. They can be installed as per the instructions on their respective GitHub pages or in a manner suitable for your system. If your setup differs significantly, you may need to manually adjust the calls to these programs within their respective makefiles found under *'workflow/rules/'*:
 
-In this pipeline we use them with modules which can be changed in the *`config/config.yaml`* file.
+In this pipeline, we utilize modules, which can be modified in the *`config/config.yaml`* file.
 
 - [conda](https://docs.anaconda.com/free/anaconda/reference/release-notes/#anaconda-2022-05-may-10-2022)
 - [Tandem Repeat Finder](https://github.com/Benson-Genomics-Lab/TRF)
@@ -60,7 +61,7 @@ In this pipeline we use them with modules which can be changed in the *`config/c
 
 ### Containers
 
-RepeatModeler, RepeatMasker and BRAKER3 are used as containers which we find worked best on our system. You can specify them in the "containers" section of the *`config/config.yaml`*
+[RepeatModeler](https://www.repeatmasker.org/RepeatModeler/), [RepeatMasker](https://www.repeatmasker.org/) and [BRAKER3](https://github.com/Gaius-Augustus/BRAKER/tree/master/example) are used as containers which we find worked best on our system. You can specify them in the "containers" section of the *`config/config.yaml`* file.
 
 ### BUSCO
 
