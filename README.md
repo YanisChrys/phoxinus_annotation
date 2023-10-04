@@ -11,7 +11,7 @@ Table of Contents
 - [Testing](#testing)
 - [Running the Pipeline](#run-pipeline)
 - [Pipeline Visualization](#pipeline-visualization)
-
+- [References](#references-of-tools-used)
 ## Input
 
 All inputs need to be specified in the *`config/config.yaml`* file.
@@ -188,4 +188,37 @@ snakemake -s workflow/Snakefile.smk --rulegraph --until final_masking | dot -Tpn
 ### Entire pipeline in EP mode:
 
 ![etp_mode](./images/rulegraph_EP_mode.png) 
+
+---
+
+
+# References of tools used
+
+- BLAST
+    - Altschul, A.F., Gish, W., Miller, W., Myers, E.W. and Lipman, D.J. (1990). A basic local alignment search tool. J Mol Biol 215:403--410.
+    - Camacho, C., Coulouris, G., Avagyan, V., Ma, N., Papadopoulos, J., Bealer, K., and Madden, T.L. (2009). Blast+:architecture and applications. BMC bioinformatics, 10(1):421. 
+- TRF 
+    - Gary Benson, Tandem repeats finder: a program to analyze DNA sequences, Nucleic Acids Research, Volume 27, Issue 2, 1 January 1999, Pages 573–580, https://doi.org/10.1093/nar/27.2.573
+- RepeatModeler
+    - https://github.com/Dfam-consortium/RepeatModeler/tree/master
+- RepeatMasker
+    - Jurka J, Smit AFA. "Reference collections of human and rodent repetitive elements." URL: http://www.girinst.org/
+- Dustmaker
+    - https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/src/app/dustmasker/README
+    - Altschul, A.F., Gish, W., Miller, W., Myers, E.W. and Lipman, D.J. (1990). A basic local alignment search tool. J Mol Biol 215:403--410.
+    - Camacho, C., Coulouris, G., Avagyan, V., Ma, N., Papadopoulos, J., Bealer, K., and Madden, T.L. (2009). Blast+:architecture and applications. BMC bioinformatics, 10(1):421. 
+- Bedtools
+    - Quinlan, A. R. (2014). BEDTools: the Swiss‐army tool for genome feature analysis. Current protocols in bioinformatics, 47(1):11-12.
+- STAR
+    - Dobin A, Davis CA, Schlesinger F, Drenkow J, Zaleski C, Jha S, Batut P, Chaisson M, Gingeras TR. STAR: ultrafast universal RNA-seq aligner. Bioinformatics. 2013 Jan 1;29(1):15-21. doi: 10.1093/bioinformatics/bts635. Epub 2012 Oct 25. PMID: 23104886; PMCID: PMC3530905.
+- BRAKER3
+    -   Bruna, T., Hoff, K.J., Lomsadze, A., Stanke, M., & Borodovsky, M. (2021). BRAKER2: Automatic Eukaryotic Genome Annotation with GeneMark-EP+ and AUGUSTUS Supported by a Protein Database. NAR Genomics and Bioinformatics 3(1):lqaa108, doi: 10.1093/nargab/lqaa108.
+
+    -   Hoff, K.J., Lomsadze, A., Borodovsky, M. and Stanke, M. (2019). Whole-Genome Annotation with BRAKER. Methods Mol Biol. 1962:65-95, doi: 10.1007/978-1-4939-9173-0_5.
+
+    -   Hoff, K.J., Lange, S., Lomsadze, A., Borodovsky, M. and Stanke, M. (2016). BRAKER1: unsupervised RNA-Seq-based genome annotation with GeneMark-ET and AUGUSTUS. Bioinformatics, 32(5):767-769.
+
+    -   Stanke, M., Diekhans, M., Baertsch, R. and Haussler, D. (2008). Using native and syntenically mapped cDNA alignments to improve de novo gene finding. Bioinformatics, doi: 10.1093/bioinformatics/btn013.
+
+    -   Stanke. M., Schöffmann, O., Morgenstern, B. and Waack, S. (2006). Gene prediction in eukaryotes with a generalized hidden Markov model that uses hints from external sources. BMC Bioinformatics 7, 62.
 
