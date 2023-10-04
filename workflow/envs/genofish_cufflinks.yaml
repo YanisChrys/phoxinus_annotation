@@ -1,0 +1,9 @@
+name: genofish_cufflinks
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - cufflinks
+  - perl
+

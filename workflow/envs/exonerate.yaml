@@ -1,0 +1,7 @@
+channels:
+  - biobuilds
+  - conda-forge
+  - bioconda
+dependencies:
+  - exonerate==2.4.0
+  

@@ -1,0 +1,47 @@
+##############################################
+# configuration file for annotation pipeline #
+##############################################
+
+# Input
+genome_file: "resources/data/fPhoPho.hap1.20220427.fa.gz"
+
+# folder containing rna input files
+# Important: must be a folder and must end in slash "/"
+# & strandedness of sequencing
+# folder should only contain zipped fastq files that all have the same extension
+# the names of the two paires should be the same and differ only on the last character
+# of the basename which should be a 1 or 2
+# example: rna_file1.fq.gz, rna_file2.fq.gz
+rnaseq:
+    folder: "/share/pool/genofish_and_chips/testannotation/resources/data/rnaseq/"
+    type: "Stranded"
+
+# Containers
+masking_container: "/share/scientific_bin/singularity/containers/dfam-tetools.sif"
+braker_container: "/share/scientific_bin/singularity/containers/braker3.sif"
+
+# Repeat Library Configuration
+# For DFAM RepBase libraries, use the Latin name of the species.
+# For RepBase or other libraries, use the absolute path to the fasta file library.
+repeat_library: "danio"
+
+# the config directory must be placed somewhere that makes it writable:
+# because braker.pl is a pipeline that
+# optimizes parameters that reside in that directory.
+
+# Braker3 configuration
+augustus:
+    species: zebrafish
+    cfg: "utils/augustus_custom_extrinsic.cfg"
+
+# Necessary modules
+modules:
+    conda: "anaconda3/2022.05"
+    trf: "trf/4.10.0-rc.2"
+    star: "STAR/2.7.10a"
+    augustus: "augustus/3.3.3"
+
+# BUSCO
+busco:
+    lineage: "actinopterygii_odb10"
+    directory: "/share/pool/databases/busco_downloads_v5/"
