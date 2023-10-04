@@ -24,7 +24,7 @@ All inputs need to be specified in the *`config/config.yaml`* file.
 
 ### RNA-seq and protein sequences for BRAKER3
 
-If you don't have protein sequences, you can:
+If you don't have protein or RNA sequences for your sample or species, you can:
 
 - download the latest UniProt db using:
 
