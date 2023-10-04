@@ -2,7 +2,8 @@
 
 This is a repeat and gene annotation pipeline written in [snakemake](https://snakemake.readthedocs.io/en/stable/) and inspired by the [genofish annotation pipeline](https://www.sigenae.org/project_support/Genofish.html) that was developped to generate the annotation of a *Phoxinus sp.* genome assembly but can be used for many other vertebrate genomes as well and the output can be as sophisticated as your input databases are. This pipeline can provide a user-friendly and easy to run annotation pipeline with a lot of added functionalities and customizations that can be controlled from inside the *`config/config.yaml`*. The makefiles should ideally only be edited in case of a major program installation difference.
 
-## **Table of Contents**
+Table of Contents
+========
 - [Input](#input)
 - [Dependencies](#dependencies)
     - [Environments](#environments)
@@ -61,7 +62,7 @@ In this pipeline, we utilize modules, which can be modified in the *`config/conf
 
 ### Containers
 
-[RepeatModeler](https://www.repeatmasker.org/RepeatModeler/), [RepeatMasker](https://www.repeatmasker.org/) and [BRAKER3](https://github.com/Gaius-Augustus/BRAKER/tree/master/example) are used as containers which we find worked best on our system. You can specify them in the "containers" section of the *`config/config.yaml`* file.
+[RepeatModeler](https://github.com/Dfam-consortium/TETools), [RepeatMasker](https://hub.docker.com/r/pegi3s/repeat_masker/) and [BRAKER3](https://hub.docker.com/r/teambraker/braker3) are used as containers which we find worked best on our system. You can specify them in the "containers" section of the *`config/config.yaml`* file.
 
 ### BUSCO
 
