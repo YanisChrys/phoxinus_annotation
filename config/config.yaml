@@ -3,36 +3,54 @@
 ##############################################
 
 # Input
-genome_file: "resources/data/fPhoPho.hap1.20220427.fa.gz"
+genome:
+    file: "/share/pool/CompGenomVert/RefGenomes/fPhoPho/fPhoPho.hap1.20220427.fa"
+    haplotype: "hap1"
 
-# folder containing rna input files
-# Important: must be a folder and must end in slash "/"
-# & strandedness of sequencing
+# - folder containing rna input files
+# Important: must be a folder and must end in a slash "/"
 # folder should only contain zipped fastq files that all have the same extension
 # the names of the two paires should be the same and differ only on the last character
 # of the basename which should be a 1 or 2
 # example: rna_file1.fq.gz, rna_file2.fq.gz
+# - strandedness of sequencing
 rnaseq:
     folder: "/share/pool/genofish_and_chips/testannotation/resources/data/rnaseq/"
     type: "Stranded"
 
+# Consolidated protein fasta sequences
+prot_db: "/share/pool/genofish_and_chips/testannotation/resources/RefDB/protein_newheader.fa"
+
 # Containers
-masking_container: "/share/scientific_bin/singularity/containers/dfam-tetools.sif"
-braker_container: "/share/scientific_bin/singularity/containers/braker3.sif"
+containers:
+    repeat_modeler: "/share/scientific_bin/singularity/containers/dfam-tetools.sif"
+    repeat_masker: "/share/scientific_bin/singularity/containers/dfam-tetools.sif"
+    braker3: "/share/scientific_bin/singularity/containers/braker3.sif"
 
 # Repeat Library Configuration
 # For DFAM RepBase libraries, use the Latin name of the species.
-# For RepBase or other libraries, use the absolute path to the fasta file library.
+# For RepBase or other libraries, use the absolute path to the fasta file library
 repeat_library: "danio"
 
-# the config directory must be placed somewhere that makes it writable:
-# because braker.pl is a pipeline that
-# optimizes parameters that reside in that directory.
-
 # Braker3 configuration
+# Augustus species/run name and cfg file
 augustus:
     species: zebrafish
     cfg: "utils/augustus_custom_extrinsic.cfg"
+
+# BRAKER3 run
+# - choose genemark mode to use (see readme file and braker github page for details)
+# - edit BRAKER options that are not related to directory handling or input
+# and add any additional options you want to include
+BRAKER3: 
+    mode: "ETP"
+    user_options: "--AUGUSTUS_ab_initio \
+        --softmasking_off \
+        --UTR=off \
+        --gff3 \
+        --verbosity=4 \
+        --nocleanup \
+        "
 
 # Necessary modules
 modules:

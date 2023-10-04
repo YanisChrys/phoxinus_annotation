@@ -6,7 +6,7 @@ import re
 import pandas as pd
 from glob import glob
 
-configfile: "config/config_HAP1.yaml"
+configfile: "config/config.yaml"
 
 HAP=config["genome"]["haplotype"]
 
@@ -47,12 +47,10 @@ strandnmb = ["1"] if config["rnaseq"]["type"] == "Unstranded" else ["1", "2"]
 rule all:
     input:
     # masking
-        rules.final_masking.output,
-    # rna seq
-        expand("results_" + HAP + "/02_rnaseq/aligned/hints.rnaseq.exonpart{str}.gff", str=strandnmb),
-        expand("results_" + HAP + "/02_rnaseq/cufflinks/{sampleID}/transcripts.gtf", sampleID=RNA_WLD.sampleID),
+        "results_" + HAP + "/01_masking/all_repeats.bed",
+        "results_" + HAP + "/01_masking/genome.masked.fa",
     # braker
-        expand("results_" + HAP + "/04_braker3/busco/run_{db}/missing_busco_list.tsv", db=config["busco"]["lineage"]),
+        "results_" + HAP + "/04_braker3/busco/run_" + config["busco"]["lineage"] + "/missing_busco_list.tsv"
 
 ### Functions ###
 
@@ -86,6 +84,68 @@ def librarytype(seqtype):
         return "fr-unstranded"
     elif seqtype == "Stranded":
         return "fr-firststrand"
+
+def conditional_braker_input(mode):
+    """
+    Generate input paths for BRAKER3 based on the user-specified Genemark mode.
+    
+    Parameters:
+    - mode (str): Mode of operation. Can be one of "ES", "ET", "ET_hints", "EP", or "ETP".
+    
+    Returns:
+    - dict: A dictionary containing the paths for the required inputs based on the mode.
+    """
+    inputs = {}
+    if mode == "ES":
+    # genome and rna seq
+        inputs["genome"]="results_" + HAP + "/01_masking/genome.masked.fa"
+    elif mode == "ET":
+    # genome and rna seq
+        inputs["genome"]="results_" + HAP + "/01_masking/genome.masked.fa"
+        inputs["rnaseq_bam"] = "results_" + HAP + "/02_rnaseq/aligned/all_samples.bam"
+    elif mode == "ET_hints":
+    # genome and rna hints
+        inputs["genome"]="results_" + HAP + "/01_masking/genome.masked.fa"
+        inputs["rnaseq_hints"] = "results_" + HAP + "/02_rnaseq/aligned/*.hints"
+    elif mode == "EP":
+    # genome and proteins
+        inputs["genome"]="results_" + HAP + "/01_masking/genome.masked.fa"
+        inputs["prot_seq"] = config["prot_db"]
+    elif mode == "ETP":
+    # genome, protein and RNA sequences
+        inputs["genome"]="results_" + HAP + "/01_masking/genome.masked.fa"
+        inputs["rnaseq_bam"] = "results_" + HAP + "/02_rnaseq/aligned/all_samples.bam"
+        inputs["prot_seq"] = config["prot_db"]
+    else:
+        raise ValueError("Invalid mode. Please select from ET, ET_hints, EP, or ETP.")
+    return inputs
+
+
+def braker_options(mode):
+    """
+    Generate commandline commands for handling the different BRAKER3 input files
+    based on the user-specified Genemark mode.
+    
+    Parameters:
+    - mode (str): Mode of operation. Can be one of "ES", "ET", "ET_hints", "EP", or "ETP".
+    
+    Returns:
+    - str: A string containing the command line options for BRAKER based on the mode.
+    """
+    if mode == "ES":
+        options="--genome={input.genome}"
+    elif mode == "ET":
+        options="--genome={input.genome} --bam={input.rnaseq_bam}"
+    elif mode == "ET_hints":
+        options="--genome={input.genome} --hints={input.rnaseq_hints}"
+    elif mode == "EP":
+        options="--genome={input.genome} --prot_seq={input.prot_seq}\"
+    elif mode == "ETP":
+        options="--genome={input.genome} --bam={input.bam} --prot_seq={input.prot_seq}"
+    else:
+        raise ValueError("Invalid mode. Please select from ET, EP, or ETP.")
+    return options
+
 
 include: "rules/01-repeat-masking.smk"
 include: "rules/02-rnaseq-mapping.smk"

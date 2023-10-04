@@ -35,7 +35,7 @@
 
 rule split_genome:
     input:
-        config["genome_file"]
+        config["genome"]["file"]
     output:
         dynamic("results_" + HAP + "/01_masking/split/{SingleSequence}.tfa")
     params:
@@ -77,7 +77,7 @@ rule tandem_repeat_finder:
     output:
         "results_" + HAP + "/01_masking/split/{SingleSequence}.tfa.2.7.7.80.10.50.500.dat"
     envmodules:
-        config["modules"]["conda"]
+        config["modules"]["conda"],
         config["modules"]["trf"]
     params:
         run_hap=HAP
@@ -101,7 +101,7 @@ rule trf2gff:
 
 rule repeat_modeler:
     input:
-        config["genome_file"]
+        config["genome"]["file"]
     output:
         DB="results_" + HAP + "/01_masking/MyDatabase-families.fa",
         genome="results_" + HAP + "/01_masking/genome.fas"
@@ -112,7 +112,7 @@ rule repeat_modeler:
     threads: 
         workflow.cores
     container: 
-        config["masking_container"]
+        config["containers"]["repeat_modeler"]
     log: 
         "results_" + HAP + "/logs/repeat_modeler.log"
     shell: """
@@ -138,7 +138,7 @@ rule repeat_masker_self:
     threads: 
         workflow.cores
     container: 
-        config["masking_container"]
+        config["containers"]["repeat_masker"]
     log:
         "results_" + HAP + "/logs/repeat_masker_self.log"
     shell: """
@@ -155,14 +155,14 @@ rule repeat_masker_full:
         "results_" + HAP + "/01_masking/full/genome.fas.masked.masked",
         "results_" + HAP + "/01_masking/full/genome.fas.masked.out"
     params:
-        library=config["repeat_library"],
+        library="-lib " + config["repeat_library"] if os.path.exists(config["repeat_library"]) else "-species " + config["repeat_library"],
         workdir="results_" + HAP + "/01_masking/full",
-        engine="ncbi"
+        engine="ncbi",
         run_hap=HAP
     threads: 
         workflow.cores
     container: 
-        config["masking_container"]
+        config["containers"]["repeat_masker"]
     log:
         "results_" + HAP + "/logs/repeat_masker_full.log"
     shell: """
@@ -170,7 +170,7 @@ rule repeat_masker_full:
         [ ! -f results_{params.run_hap}/01_masking/full/genome.fas ] && cp {input} results_{params.run_hap}/01_masking/full/
         
         ( cd {params.workdir}
-        RepeatMasker -a -pa {threads} -xsmall -species {params.library} genome.fas.masked ) &> {log}
+        RepeatMasker -a -pa {threads} -xsmall {params.library} genome.fas.masked ) &> {log}
     """
 
 rule repeat_masker2gff:
@@ -181,10 +181,8 @@ rule repeat_masker2gff:
         rm_self="results_" + HAP + "/01_masking/RMasker_self_masked.gff3",
         rm_full="results_" + HAP + "/01_masking/RMasker_full_masked.gff3"
     container: 
-        config["masking_container"]
+        config["containers"]["repeat_masker"]
     shell: """
-        ## summarize repeatmasker steps... 
-
         rmOutToGFF3.pl {input.rm_self} | \
         perl -ane '$id; if(!/^\#/){{@F=split(/\t/, $_);chomp $F[-1];$id++;$F[-1]="ID=$F[0]-$id;$F[-1]";$F[-1]=~s/ /%20/g;$_=join("\t", @F)."\n"}} print $_'\
         > {output.rm_self}   
@@ -198,9 +196,9 @@ rule final_masking:
     input:
         gffs=("results_" + HAP + "/01_masking/trf.gff3",        
         "results_" + HAP + "/01_masking/dustmasker.gff3",
-        "results_" + HAP "/01_masking/RMasker_self_masked.gff3",
+        "results_" + HAP + "/01_masking/RMasker_self_masked.gff3",
         "results_" + HAP + "/01_masking/RMasker_full_masked.gff3"),
-        genome=config["genome_file"]
+        genome=config["genome"]["file"]
     output:
         bed="results_" + HAP + "/01_masking/all_repeats.bed",
         genome="results_" + HAP + "/01_masking/genome.masked.fa"

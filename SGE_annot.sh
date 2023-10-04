@@ -17,8 +17,8 @@ conda activate genofish
 #one core will be used by snakemake to monitore the other processes
 THREADS=$(expr ${NSLOTS} - 1)
 
-snakemake  \
-    --snakefile workflow/Snakefile_HAP1 \
+snakemake -n \
+    --snakefile workflow/Snakefile.smk \
     --keep-going \
     --latency-wait 300 \
     --use-envmodules \
@@ -35,20 +35,3 @@ snakemake  \
     --rerun-triggers mtime \
     --stats genofish_HAP1-stats_braker3maker2.txt
 
-# snakemake -s workflow/Snakefile --dag --until braker3busco \
-# | dot -Tpdf > graph_of_jobs.pdf
-
-#    --stats genofish_HAP1-stats_abinitio.txt
-#    --conda-frontend conda \
-#    --resources mem_mb=500000 \
-#    --conda-create-envs-only
-#    --rerun-incomplete \
-#    --keep-incomplete \
-
-
-# export PATH="/home/ychrysostomakis/.conda/envs/maker/pkgs/evidencemodeler-2.1.0-hdbdd923_1/opt/evidencemodeler-2.1.0/EVidenceModeler:$PATH"
-# export PATH="/home/ychrysostomakis/.conda/envs/maker/pkgs/evidencemodeler-2.1.0-hdbdd923_1/opt/evidencemodeler-2.1.0/EvmUtils/evidence_modeler.pl:$PATH"
-# export PATH="/home/ychrysostomakis/.conda/envs/maker/pkgs/evidencemodeler-2.1.0-hdbdd923_1/bin/EVidenceModeler:$PATH"
-
-# export PATH="/share/pool/genofish_and_chips/testannotation/.snakemake/conda/f723a857c81a13a829d027679e8a8bfb_/opt/evidencemodeler-2.1.0/EvmUtils/evidence_modeler.pl:$PATH"
-# export PATH="/share/pool/genofish_and_chips/testannotation/.snakemake/conda/f723a857c81a13a829d027679e8a8bfb_/bin/EVidenceModeler
