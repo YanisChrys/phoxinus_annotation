@@ -1,8 +1,12 @@
 # **Genome Annotation Pipeline**
 
-This is a repeat and gene annotation pipeline written in [snakemake](https://snakemake.readthedocs.io/en/stable/) and inspired by the [genofish annotation pipeline](https://www.sigenae.org/project_support/Genofish.html) that was developped to generate the annotation of a *Phoxinus sp.* genome assembly but can be used for many other vertebrate genomes and the output can be as sophisticated as your input databases are. This pipeline can provide a user-friendly and easy to run annotation pipeline with a lot of added functionalities and customizations that can be controlled from inside the *`config/config.yaml`*. The makefiles should ideally only be edited in case of a major program installation difference.
+This is a repeat and gene annotation pipeline written in [snakemake](https://snakemake.readthedocs.io/en/stable/) that draws inspiration from the [genofish annotation pipeline](https://www.sigenae.org/project_support/Genofish.html), albeit with new capabilities, major modifications and without the use of MAKER. 
+We originally designed it for the annotation of a *Phoxinus sp.* genome assembly. However, its versatility allows it to be applied to various vertebrate genomes and the output can be as sophisticated as your input databases.
 
-This pipeline uses RepeatModeler, RepeatMasker, Tandem Repeat Finder, and Dustmaker for repeat annotation and BRAKER3 for gene annotation.
+The pipeline was designed with ease-of-use in mind and to allow the user to personalize the run as much as possible without the need for editing the code directly. All functionalities and customizations are manageable from the *`config/config.yaml`* file. 
+Direct modifications to the makefiles should be reserved for instances of significant program installation discrepancies.  It has been tested on an SGE cluster, and we encourage users on SGE or different systems to give their feedback.
+
+For repeat annotation, the pipeline employs RepeatModeler, RepeatMasker, Tandem Repeat Finder, and Dustmaker. Gene annotation is performed by BRAKER3.
 
 
 Table of Contents
@@ -20,9 +24,9 @@ Table of Contents
 All inputs need to be specified in the *`config/config.yaml`* file.
 
 - Absolute path to one haplotype at a time from a genome assembly.
-- Folder path to RNA seq reads HiC reads should be in two files, *`{filename}_R1.{fastq|fastq.gz|fq.gz}`* and *`{filename}_R2.{fastq|fastq.gz|fq.gz}`*.
+- Folder path to paired-end RNA seq reads  *`"{sample_ID_per_read_pair}1.{ext}"`* and *`"{sample_ID_per_read_pair}2.{ext}"`*.
 - Absolute path to a protein database as a `{filename}.fasta` file.
-- Dfam curated species name as a string or absolute path to your own curated repeat library. The pipeline can deal with either case.
+- Dfam curated species library name as a string or absolute path to your own curated repeat library. The pipeline can deal with either case.
 - An augustus_custom_extrinsic.cfg files placed inside the `./utils` library and a gm_key for Genemark placed inside the user's home directory.
 
 ### RNA-seq and protein sequences for BRAKER3
