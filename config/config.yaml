@@ -5,6 +5,7 @@
 # Input
 genome:
     file: "/share/pool/CompGenomVert/RefGenomes/fPhoPho/fPhoPho.hap1.20220427.fa"
+
     haplotype: "hap1"
 
 # - folder containing rna input files

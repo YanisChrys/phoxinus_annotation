@@ -1,6 +1,9 @@
 # **Genome Annotation Pipeline**
 
-This is a repeat and gene annotation pipeline written in [snakemake](https://snakemake.readthedocs.io/en/stable/) and inspired by the [genofish annotation pipeline](https://www.sigenae.org/project_support/Genofish.html) that was developped to generate the annotation of a *Phoxinus sp.* genome assembly but can be used for many other vertebrate genomes as well and the output can be as sophisticated as your input databases are. This pipeline can provide a user-friendly and easy to run annotation pipeline with a lot of added functionalities and customizations that can be controlled from inside the *`config/config.yaml`*. The makefiles should ideally only be edited in case of a major program installation difference.
+This is a repeat and gene annotation pipeline written in [snakemake](https://snakemake.readthedocs.io/en/stable/) and inspired by the [genofish annotation pipeline](https://www.sigenae.org/project_support/Genofish.html) that was developped to generate the annotation of a *Phoxinus sp.* genome assembly but can be used for many other vertebrate genomes and the output can be as sophisticated as your input databases are. This pipeline can provide a user-friendly and easy to run annotation pipeline with a lot of added functionalities and customizations that can be controlled from inside the *`config/config.yaml`*. The makefiles should ideally only be edited in case of a major program installation difference.
+
+This pipeline uses RepeatModeler, RepeatMasker, Tandem Repeat Finder, and Dustmaker for repeat annotation and BRAKER3 for gene annotation.
+
 
 Table of Contents
 ========
@@ -105,7 +108,7 @@ This pipeline allows the user to customize the run based on the input data.
 
 - **ES**: If have neither RNA nor protein data, BRAKER3 will run in ES mode. You should set the `BRAKER3 mode` to `"ES"` in the *`config/config.yaml`*
 - **ET**: If you only have a genome and RNA seq data, you need to set the mode to `"ET"`. See [Input](#input)
-- **ET_hints**: If you have a hints file, either `{filename}.hints` or `{filename}.gff` - like the data provided from BRAKER3, from a previous BRAKER3 run or from making the data yourself with a program like exonerate or HISAT, you need to set the mode to `"ET_hints"`
+- **hints**: If you have a hints file, either `{filename}.hints` or `{filename}hints.gff` - like the data provided from BRAKER3, from a previous BRAKER3 run or from making the data yourself with a program like exonerate, HISAT2 and/or ProtHint, you need to set the mode to `"hints"`
 - **EP**: If you only have a protein database saved as a fasta file, you need to set the mode to `"EP"`.
 - **ETP**: Finally, if you have both a protein database and a set of RNA sequence data you need to set the mode to `"ETP"`. The RNA will be mapped to your genome with STAR and the output of that will be used for BRAKER3.
 
@@ -136,6 +139,10 @@ snakemake -s workflow/Snakefile.smk --dry-run --cores 5 -p -r -w 5 --verbose
 ```
 
 ## Run pipeline:
+
+The pipeline accepts one assembly fasta file at a time for better control of each run, resource management and to avoid overwriting temporary files.
+The configuration `"HAP"` variable can be used as a proxy for the assembly prefix and the haplotype used for each run.
+
 You can then run the pipeline with:
 
 ```
