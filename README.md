@@ -112,7 +112,7 @@ This pipeline allows the user to customize the run based on the input data.
 
 - **ES**: If have neither RNA nor protein data, BRAKER3 will run in ES mode. You should set the `BRAKER3 mode` to `"ES"` in the *`config/config.yaml`*
 - **ET**: If you only have a genome and RNA seq data, you need to set the mode to `"ET"`. See [Input](#input)
-- **hints**: If you have a hints file, either `{filename}.hints` or `{filename}hints.gff` - like the data provided from BRAKER3, from a previous BRAKER3 run or from making the data yourself with a program like exonerate, HISAT2 and/or ProtHint, you need to set the mode to `"hints"`
+- **hints**: If you have a hints file, either `{filename}.hints` or `{filename}.hints.gff` - like the data provided from BRAKER3, from a previous BRAKER3 run or from making the data yourself with a program like exonerate, HISAT2 and/or ProtHint, you need to set the mode to `"hints"`
 - **EP**: If you only have a protein database saved as a fasta file, you need to set the mode to `"EP"`.
 - **ETP**: Finally, if you have both a protein database and a set of RNA sequence data you need to set the mode to `"ETP"`. The RNA will be mapped to your genome with STAR and the output of that will be used for BRAKER3.
 
