@@ -4,7 +4,7 @@ This is a repeat and gene annotation pipeline written in [snakemake](https://sna
 We originally designed it for the annotation of a *Phoxinus sp.* genome assembly. However, its versatility allows it to be applied to various vertebrate genomes and the output can be as sophisticated as your input databases.
 
 The pipeline was designed with ease-of-use in mind and to allow the user to personalize the run as much as possible without the need for editing the code directly. All functionalities and customizations are manageable from the *`config/config.yaml`* file. 
-Direct modifications to the makefiles should be reserved for instances of significant program installation discrepancies.  It has been tested on an SGE cluster, and we encourage users on SGE or different systems to give their feedback.
+Direct modifications to the makefiles should be reserved for instances of significant program installation discrepancies.  It has been tested on an SGE cluster, and users on SGE or different systems are encouraged to provide their feedback.
 
 For repeat annotation, the pipeline employs RepeatModeler, RepeatMasker, Tandem Repeat Finder, and Dustmaker. Gene annotation is performed by BRAKER3.
 
