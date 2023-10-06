@@ -23,6 +23,8 @@ snakemake -n \
     --reason \
     --nolock \
     --rerun-triggers mtime \
-    --stats "./stats.json" \
-    --report "./report.html"
+    --stats "./stats.json" 
+    
+        
+        #--report "./report.html"
 
