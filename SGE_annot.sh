@@ -14,9 +14,9 @@ snakemake -n \
     --use-envmodules \
     --use-conda \
     --use-singularity \
+    -j ${THREADS} \
     --singularity-args "--home $PWD" \
     --singularity-args "--bind $PWD/temp:/tmp" \
-    -j ${THREADS} \
     --default-resources "tmpdir='/path/to/tempdir'" \
     --verbose \
     --printshellcmds \
