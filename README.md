@@ -178,7 +178,7 @@ snakemake \
     --snakefile workflow/Snakefile.smk \
     --keep-going \
     --latency-wait 300 \
-    -j ${THREADS} \
+    -c ${THREADS} \
     --use-singularity \
     --singularity-args "--home $PWD" \
     --singularity-args "--bind $PWD/temp:/tmp" \
