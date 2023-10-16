@@ -167,7 +167,30 @@ snakemake \
     --nolock \
     --rerun-triggers mtime \
     --rerun-incomplete \
-    --stats "./stats.json" \
+    --stats "./stats.json"
+
+```
+
+## Create a report with:
+
+```
+snakemake \
+    --snakefile workflow/Snakefile.smk \
+    --keep-going \
+    --latency-wait 300 \
+    -j ${THREADS} \
+    --use-singularity \
+    --singularity-args "--home $PWD" \
+    --singularity-args "--bind $PWD/temp:/tmp" \
+    --default-resources "tmpdir='/path/to/tmp'" \
+    --verbose \
+    --use-conda \
+    --use-envmodules \
+    --printshellcmds \
+    --reason \
+    --nolock \
+    --rerun-triggers mtime \
+    --rerun-incomplete \
     --report "./report.html"
 ```
 
