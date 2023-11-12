@@ -16,7 +16,7 @@ genome:
 # example: rna_file1.fq.gz, rna_file2.fq.gz
 # - strandedness of sequencing
 rnaseq:
-    folder: "/path/to/data//data/rnaseq/"
+    folder: "/path/to/data/data/rnaseq/"
     type: "Stranded"
 
 # Consolidated protein fasta sequences
