@@ -4,7 +4,7 @@
 
 # Input
 genome:
-    file: "/share/pool/CompGenomVert/RefGenomes/fPhoPho/fPhoPho.hap1.20220427.fa"
+    file: "path/to/sample.fa"
 
     haplotype: "hap1"
 
@@ -16,11 +16,12 @@ genome:
 # example: rna_file1.fq.gz, rna_file2.fq.gz
 # - strandedness of sequencing
 rnaseq:
-    folder: "/share/pool/genofish_and_chips/testannotation/resources/data/rnaseq/"
+    folder: "/path/to/data//data/rnaseq/"
     type: "Stranded"
 
 # Consolidated protein fasta sequences
-prot_db: "/share/pool/genofish_and_chips/testannotation/resources/RefDB/protein_newheader.fa"
+# fasta headers should be simple and contain no special characters or spaces
+prot_db: "/path/to/data/RefDB/protein_newheader.fa"
 
 # Containers
 containers:
@@ -63,4 +64,4 @@ modules:
 # BUSCO
 busco:
     lineage: "actinopterygii_odb10"
-    directory: "/share/pool/databases/busco_downloads_v5/"
+    directory: "/path/to/databases/busco_downloads_v5/"
