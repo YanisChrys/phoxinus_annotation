@@ -25,9 +25,9 @@ prot_db: "/path/to/data/RefDB/protein_newheader.fa"
 
 # Containers
 containers:
-    repeat_modeler: "/share/scientific_bin/singularity/containers/dfam-tetools.sif"
-    repeat_masker: "/share/scientific_bin/singularity/containers/dfam-tetools.sif"
-    braker3: "/share/scientific_bin/singularity/containers/braker3.sif"
+    repeat_modeler: "/path/to/dfam-tetools.sif"
+    repeat_masker: "/path/to/dfam-tetools.sif"
+    braker3: "/path/to/braker3.sif"
 
 # Repeat Library Configuration
 # For DFAM RepBase libraries, use the Latin name of the species.
