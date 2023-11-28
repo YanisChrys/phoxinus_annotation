@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # replace with own modules
-module load singularity
+module load singularity 
 module load anaconda3
 conda activate genome_annotation
 
 THREADS=50
 
-snakemake -n \
+snakemake \
     --snakefile workflow/Snakefile.smk \
     --keep-going \
     --latency-wait 300 \
@@ -17,6 +17,7 @@ snakemake -n \
     -j ${THREADS} \
     --singularity-args "--home $PWD" \
     --singularity-args "--bind $PWD/temp:/tmp" \
+    -j ${THREADS} \
     --default-resources "tmpdir='/path/to/tempdir'" \
     --verbose \
     --printshellcmds \

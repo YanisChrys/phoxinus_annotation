@@ -5,7 +5,6 @@
 # Input
 genome:
     file: "path/to/sample.fa"
-
     haplotype: "hap1"
 
 # - folder containing rna input files
@@ -16,7 +15,7 @@ genome:
 # example: rna_file1.fq.gz, rna_file2.fq.gz
 # - strandedness of sequencing
 rnaseq:
-    folder: "/path/to/data/data/rnaseq/"
+    folder: "/path/to/data/rnaseq/"
     type: "Stranded"
 
 # Consolidated protein fasta sequences
@@ -64,4 +63,4 @@ modules:
 # BUSCO
 busco:
     lineage: "actinopterygii_odb10"
-    directory: "/path/to/databases/busco_downloads_v5/"
+    directory: "/path/to/databases/busco/"
