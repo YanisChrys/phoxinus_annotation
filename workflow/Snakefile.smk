@@ -11,7 +11,7 @@ configfile: "config/config.yaml"
 HAP=config["genome"]["haplotype"]
 
 # Ensure RNA seq data folder path ends with '/'
-if not config["rnaseq"]["folder"].endswith('/'):
+if config["rnaseq"]["folder"] and not config["rnaseq"]["folder"].endswith('/'):
     raise ValueError("RNA seq data folder path must end with '/', please check your configuration file")
 
 ### Wildcard Constraints ###
@@ -121,7 +121,7 @@ def conditional_braker_input(mode):
     return inputs
 
 
-def braker_options(mode):
+def braker_options(mode,inputs):
     """
     Generate commandline commands for handling the different BRAKER3 input files
     based on the user-specified Genemark mode.
@@ -132,16 +132,22 @@ def braker_options(mode):
     Returns:
     - str: A string containing the command line options for BRAKER based on the mode.
     """
+    options = []
     if mode == "ES":
-        options="--genome={input.genome}"
+        options.append(f"--genome={inputs['genome']}")
     elif mode == "ET":
-        options="--genome={input.genome} --bam={input.rnaseq_bam}"
+        options.append(f"--genome={inputs['genome']}")
+        options.append(f"--bam={inputs['rnaseq_bam']}")
     elif mode == "ET_hints":
-        options="--genome={input.genome} --hints={input.rnaseq_hints}"
+        options.append(f"--genome={inputs['genome']}")
+        options.append(f"--hints={inputs['rnaseq_hints']}")
     elif mode == "EP":
-        options="--genome={input.genome} --prot_seq={input.prot_seq}\"
+        options.append(f"--genome={inputs['genome']}")
+        options.append(f"--prot_seq={inputs['prot_seq']}")
     elif mode == "ETP":
-        options="--genome={input.genome} --bam={input.bam} --prot_seq={input.prot_seq}"
+        options.append(f"--genome={inputs['genome']}")
+        options.append(f"--bam={inputs['rnaseq_bam']}")
+        options.append(f"--prot_seq={inputs['prot_seq']}")
     else:
         raise ValueError("Invalid mode. Please select from ET, EP, or ETP.")
     return options
