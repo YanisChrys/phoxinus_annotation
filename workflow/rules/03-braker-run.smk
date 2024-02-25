@@ -1,5 +1,8 @@
 ### BRAKER3 ###
 
+
+# input files should be within the directory tree of the working directory 
+# (ie directory from which the snakemake command is called)
 rule braker3:
     input:
         **conditional_braker_input(config["BRAKER3"]["mode"])
@@ -18,19 +21,24 @@ rule braker3:
         augcfg=config["augustus"]["cfg"],
         augconfig="results_" + HAP + "/04_braker3/config",
         augscripts="results_" + HAP + "/04_braker3/scripts",
-        input_options=braker_options(config["BRAKER3"]["mode"]),
+        input_options=lambda wildcards, input: braker_options(config["BRAKER3"]["mode"],input),
         user_specified_options=config["BRAKER3"]["user_options"]
     container:
         config["containers"]["braker3"]
     shell: """      
         # copy augustus config directory to working dir 
         # in the braker 3 container, the augustus config file is here:
+        # /usr/share/augustus/config
+        # 
         # sed 's|bin/augustus$|config|'
         # for module:
+
+        #/usr/share/augustus/scripts/
         # bin/augustus -> config/
 
-        cp -r $(which augustus | sed 's|bin/augustus$|config|') {params.outdir}
-        cp -R $(which augustus | sed 's|bin/augustus$|bin|') {params.augscripts}
+
+        cp -rn $(which augustus | sed 's|bin/augustus$|share/augustus/config|') {params.outdir}
+        cp -rn $(which augustus | sed 's|bin/augustus$|share/augustus/scripts|') {params.outdir}
         cp {params.cfg} ./
         
         sleep 100
