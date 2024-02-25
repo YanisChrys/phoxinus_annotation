@@ -99,12 +99,20 @@ rule trf2gff:
         mv {output.dat}.gff {output.gff}
     """
 
-rule repeat_modeler:
+rule copy_genome_locally:
     input:
         config["genome"]["file"]
     output:
-        DB="results_" + HAP + "/01_masking/MyDatabase-families.fa",
-        genome="results_" + HAP + "/01_masking/genome.fas"
+        "results_" + HAP + "/01_masking/genome.fas"
+    shell: """
+        cp {input} {output}
+    """
+
+rule repeat_modeler:
+    input:
+        "results_" + HAP + "/01_masking/genome.fas"
+    output:
+        DB="results_" + HAP + "/01_masking/MyDatabase-families.fa"
     params:
         database="MyDatabase",
         work="results_" + HAP + "/01_masking",
@@ -116,8 +124,7 @@ rule repeat_modeler:
     log: 
         "results_" + HAP + "/logs/repeat_modeler.log"
     shell: """
-        (cp {input} {params.work}/genome.fas
-        cd {params.work}
+        (cd {params.work}
         
         BuildDatabase -engine {params.engine} -name {params.database} genome.fas
 
