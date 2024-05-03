@@ -1,11 +1,22 @@
 #!/bin/bash
+#$ -S /bin/bash
+#$ -cwd
+#$ -j n
+#$ -q large.q,medium.q
+#$ -N epi_anot_pri_no_tpsi
+#$ -pe smp 41
+#$ -e /path/to/logfiles
+#$ -o /path/to/logfiles
+#$ -M i.chrysostomakis@leibniz-lib.de
+#$ -m baes
 
-# replace with own modules
-module load singularity 
-module load anaconda3
-conda activate genome_annotation
+module load anaconda3/2022.05
+module load singularity/3.10.5_fix
+conda activate genofish # should be snakemake 7.24
 
-THREADS=50
+mkdir -p $PWD/temp
+export TMPDIR="$PWD/temp"
+export THREADS=$(expr ${NSLOTS} - 1)
 
 snakemake \
     --snakefile workflow/Snakefile.smk \
@@ -15,17 +26,18 @@ snakemake \
     --use-conda \
     --use-singularity \
     -j ${THREADS} \
-    --singularity-args "--home $PWD" \
-    --singularity-args "--bind $PWD/temp:/tmp" \
-    -j ${THREADS} \
-    --default-resources "tmpdir='/path/to/tempdir'" \
     --verbose \
     --printshellcmds \
-    --reason \
     --nolock \
     --rerun-triggers mtime \
-    --stats "./stats.json" 
-    
-        
-        #--report "./report.html"
+    --singularity-args "--home $PWD" \
+    --singularity-args "--bind $TMPDIR:$TMPDIR" \
+    --default-resources "tmpdir='$TMPDIR'" 
 
+# Revio:
+# bam file with HiFi reads (should be fastq)
+
+# Sequel 2:
+# bam file with subreads
+
+# 

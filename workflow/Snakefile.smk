@@ -49,6 +49,9 @@ rule all:
     # masking
         "results_" + HAP + "/01_masking/all_repeats.bed",
         "results_" + HAP + "/01_masking/genome.masked.fa",
+        "results_" + HAP + "/02_rnaseq/aligned/stats/qualimap/report.pdf",
+        "results_" + HAP + "/01_masking/full_no_TPSI/genome.fas.divsum",
+        "results_" + HAP + "/01_masking/full_no_TPSI/genome.fas.html",
     # braker
         "results_" + HAP + "/04_braker3/busco/run_" + config["busco"]["lineage"] + "/missing_busco_list.tsv"
 
@@ -109,11 +112,11 @@ def conditional_braker_input(mode):
         inputs["rnaseq_hints"] = "results_" + HAP + "/02_rnaseq/aligned/*.hints"
     elif mode == "EP":
     # genome and proteins
-        inputs["genome"]="results_" + HAP + "/01_masking/genome.masked.fa"
+        inputs["genome"]="results_" + HAP + "/01_masking/full_no_TPSI/genome.masked.fa"
         inputs["prot_seq"] = config["prot_db"]
     elif mode == "ETP":
     # genome, protein and RNA sequences
-        inputs["genome"]="results_" + HAP + "/01_masking/genome.masked.fa"
+        inputs["genome"]="results_" + HAP + "/01_masking/full_no_TPSI/genome.masked.fa"
         inputs["rnaseq_bam"] = "results_" + HAP + "/02_rnaseq/aligned/all_samples.bam"
         inputs["prot_seq"] = config["prot_db"]
     else:
@@ -154,5 +157,17 @@ def braker_options(mode,inputs):
 
 
 include: "rules/01-repeat-masking.smk"
-include: "rules/02-rnaseq-mapping.smk"
+
+
+if config["rnaseq"]["mapping"] == "HISAT":
+    #use hisat for mapping reads
+    include: "rules/02-rnaseq-mapping-hisat.smk"
+elif config["rnaseq"]["mapping"] == "STAR":
+    # use star for mapping reads
+    include: "rules/02-rnaseq-mapping.smk"
+else:
+    # Don't rock the boat...
+    raise ValueError(f"Invalid mapping algorithm specified: Please use 'HISAT' or 'STAR'.")
+
 include: "rules/03-braker-run.smk"
+include: "rules/04-repeatlandscape.smk"

@@ -1,0 +1,8 @@
+name: protexcluder
+channels:
+  - nanjiang
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - protexcluder=1.2

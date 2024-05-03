@@ -58,7 +58,7 @@ rule star_mapping:
     output:
         "results_" + HAP + "/02_rnaseq/aligned/{sampleID}/Aligned.sortedByCoord.out.bam"
     threads:
-        min(workflow.cores,10)
+        min(workflow.cores,20)
     params:
         genomedir="results_" + HAP + "/02_rnaseq/STAR_index/",
         prefix="results_" + HAP + "/02_rnaseq/aligned/{sampleID}/"
@@ -88,4 +88,33 @@ rule merge:
         "../envs/samtools.yaml"
     shell: """
         samtools merge -@ {threads} {output} {input}
+    """
+
+rule samtools_stats:
+    input:
+        "results_" + HAP + "/02_rnaseq/aligned/all_samples.bam"
+    output:
+        "results_" + HAP + "/02_rnaseq/aligned/stats/samtools_stats.txt"
+    conda:
+        "../envs/samtools.yaml"
+    threads: 
+        min(workflow.cores,10)
+    shell: """
+        samtools stats --threads {threads} {input} > {output} 
+    """
+
+#-hm 3 --collect-overlap-pairs -nr 1000 -nw 500 -outformat PDF:HTML
+rule qualimap:
+    input:
+        "results_" + HAP + "/02_rnaseq/aligned/all_samples.bam"
+    output:
+        "results_" + HAP + "/02_rnaseq/aligned/stats/qualimap/report.pdf"
+    conda:
+        "../envs/qualimap.yaml"
+    threads:
+        min(workflow.cores,10)
+    params:
+        dir="results_" + HAP + "/02_rnaseq/aligned/stats/qualimap/"
+    shell: """
+        qualimap bamqc -bam {input} -c -outdir {params.dir} -outformat pdf -nt {threads} --java-mem-size=10G
     """

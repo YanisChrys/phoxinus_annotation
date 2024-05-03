@@ -1,0 +1,8 @@
+name: tePSI
+channels:
+  - nanjiang
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - transposonpsi=1.0.0

@@ -1,0 +1,7 @@
+name: gaas
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - gaas=1.2.0
