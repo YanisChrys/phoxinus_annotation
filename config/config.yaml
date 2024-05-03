@@ -2,10 +2,12 @@
 # configuration file for annotation pipeline #
 ##############################################
 
+reads: "/path/to/reads.fq.gz"
+
 # Input
 genome:
-    file: "path/to/sample.fa"
-    haplotype: "hap1"
+    file: /path/to/genome.fasta
+    haplotype: "primary"
 
 # - folder containing rna input files
 # Important: must be a folder and must end in a slash "/"
@@ -15,28 +17,35 @@ genome:
 # example: rna_file1.fq.gz, rna_file2.fq.gz
 # - strandedness of sequencing
 rnaseq:
-    folder: "/path/to/data/rnaseq/"
+    folder: "/path/inside/pwd/rna_seq_for_annotation/"
     type: "Stranded"
+    mapping: "HISAT" # HISAT | STAR
 
 # Consolidated protein fasta sequences
 # fasta headers should be simple and contain no special characters or spaces
-prot_db: "/path/to/data/RefDB/protein_newheader.fa"
+# should be an absolute path
+prot_db: "/path/inside/pwd/Proteome/prot_serpentes_ncbi_uniprot_annot.fa"
 
 # Containers
 containers:
-    repeat_modeler: "/path/to/dfam-tetools.sif"
-    repeat_masker: "/path/to/dfam-tetools.sif"
-    braker3: "/path/to/braker3.sif"
+    repeat_modeler: "/share/scientific_bin/singularity/containers/dfam-tetools.sif"
+    repeat_masker: "/share/scientific_bin/singularity/containers/dfam-tetools.sif"
+    braker3: "/share/scientific_bin/singularity/containers/braker3.sif"
 
 # Repeat Library Configuration
 # For DFAM RepBase libraries, use the Latin name of the species.
 # For RepBase or other libraries, use the absolute path to the fasta file library
-repeat_library: "danio"
+repeat_library: "epictia"
+
+genome_size: "1914210409"
+
+# name of DFam repeat library
+repeat_library_name: "epictia"
 
 # Braker3 configuration
 # Augustus species/run name and cfg file
 augustus:
-    species: zebrafish
+    species: epictia
     cfg: "utils/augustus_custom_extrinsic.cfg"
 
 # BRAKER3 run
@@ -46,7 +55,7 @@ augustus:
 BRAKER3: 
     mode: "ETP"
     user_options: "--AUGUSTUS_ab_initio \
-        --softmasking_off \
+        --splice_sites=GCAG,ATAC 
         --UTR=off \
         --gff3 \
         --verbosity=4 \
@@ -62,5 +71,5 @@ modules:
 
 # BUSCO
 busco:
-    lineage: "actinopterygii_odb10"
-    directory: "/path/to/databases/busco/"
+    lineage: "sauropsida_odb10"
+    directory: "/share/pool/databases/busco_downloads_v5/"
