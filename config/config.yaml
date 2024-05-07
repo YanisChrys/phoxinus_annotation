@@ -55,7 +55,6 @@ augustus:
 BRAKER3: 
     mode: "ETP"
     user_options: "--AUGUSTUS_ab_initio \
-        --splice_sites=GCAG,ATAC 
         --UTR=off \
         --gff3 \
         --verbosity=4 \
