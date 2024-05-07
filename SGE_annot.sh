@@ -32,7 +32,7 @@ snakemake \
     --rerun-triggers mtime \
     --singularity-args "--home $PWD" \
     --singularity-args "--bind $TMPDIR:$TMPDIR" \
-    --default-resources "tmpdir='$TMPDIR'" 
+    --default-resources "tmpdir='$TMPDIR'" -n
 
 # Revio:
 # bam file with HiFi reads (should be fastq)

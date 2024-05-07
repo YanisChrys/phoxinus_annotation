@@ -6,7 +6,7 @@ import re
 import pandas as pd
 from glob import glob
 
-configfile: "config/config.yaml"
+configfile: "config/config_copy.yaml"
 
 HAP=config["genome"]["haplotype"]
 
@@ -50,8 +50,8 @@ rule all:
         "results_" + HAP + "/01_masking/all_repeats.bed",
         "results_" + HAP + "/01_masking/genome.masked.fa",
         "results_" + HAP + "/02_rnaseq/aligned/stats/qualimap/report.pdf",
-        "results_" + HAP + "/01_masking/full_no_TPSI/genome.fas.divsum",
-        "results_" + HAP + "/01_masking/full_no_TPSI/genome.fas.html",
+        "results_" + HAP + "/01_masking/full/genome.fas.divsum",
+        "results_" + HAP + "/01_masking/full/genome.fas.html",
     # braker
         "results_" + HAP + "/04_braker3/busco/run_" + config["busco"]["lineage"] + "/missing_busco_list.tsv"
 
@@ -112,11 +112,11 @@ def conditional_braker_input(mode):
         inputs["rnaseq_hints"] = "results_" + HAP + "/02_rnaseq/aligned/*.hints"
     elif mode == "EP":
     # genome and proteins
-        inputs["genome"]="results_" + HAP + "/01_masking/full_no_TPSI/genome.masked.fa"
+        inputs["genome"]="results_" + HAP + "/01_masking/genome.masked.fa"
         inputs["prot_seq"] = config["prot_db"]
     elif mode == "ETP":
     # genome, protein and RNA sequences
-        inputs["genome"]="results_" + HAP + "/01_masking/full_no_TPSI/genome.masked.fa"
+        inputs["genome"]="results_" + HAP + "/01_masking/genome.masked.fa"
         inputs["rnaseq_bam"] = "results_" + HAP + "/02_rnaseq/aligned/all_samples.bam"
         inputs["prot_seq"] = config["prot_db"]
     else:

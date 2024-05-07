@@ -159,6 +159,7 @@ rule combine_dbs:
 prot_filename = os.path.basename(config["prot_db"])
 PROT_NAME, PROT_EXT = os.path.splitext(prot_filename)
 
+
 rule split_uniprot:
     #Split the UniProt/Swissprot protein database into chunks for transposonPSI
     input: 
@@ -258,9 +259,9 @@ rule blast_repeat_library:
         # psq = "results_" + HAP + "/01_masking/proteins_tepsi_results/" + PROT_NAME + ".noTEs.fa.psq",
         # blast_db = "results_" + HAP + "/01_masking/proteins_tepsi_results/" + PROT_NAME + ".noTEs.fa"
     output:
-        blast = "results_" + HAP + "/01_masking/full_no_TPSI/blast/custom_lib_" + config["repeat_library_name"] + ".fa" + "blastx.out"
+        blast = "results_" + HAP + "/01_masking/full/blast/custom_lib_" + config["repeat_library_name"] + ".fa" + "blastx.out"
     params:
-        dir = "results_" + HAP + "/01_masking/full_no_TPSI/blast/"
+        dir = "results_" + HAP + "/01_masking/full/blast/"
     threads: 
         workflow.cores
     conda: 
@@ -274,12 +275,12 @@ rule protexcluder:
     #Remove blast hits from repeat library
     #script creates file in wd and adds the "noProtFinal" suffix with no flexibility
     input:
-        blast = "results_" + HAP + "/01_masking/full_no_TPSI/blast/custom_lib_" + config["repeat_library_name"] + ".fa" + "blastx.out",
+        blast = "results_" + HAP + "/01_masking/full/blast/custom_lib_" + config["repeat_library_name"] + ".fa" + "blastx.out",
         repmo_raw = "results_" + HAP + "/01_masking/full/custom_lib_" + config["repeat_library_name"] + ".fa"
     output:
         "results_" + HAP + "/01_masking/full/custom_lib_" + config["repeat_library_name"] + ".fanoProtFinal"
     params:
-        dir = "results_" + HAP + "/01_masking/full_no_TPSI/"
+        dir = "results_" + HAP + "/01_masking/full/"
     conda: 
         "../envs/protexcluder.yaml"
     shell: """
@@ -293,12 +294,12 @@ rule repeat_masker_final:
         prot_db="results_" + HAP + "/01_masking/full/custom_lib_" + config["repeat_library_name"] + ".fanoProtFinal",
         genome="results_" + HAP + "/01_masking/genome.fas"
     output:
-        "results_" + HAP + "/01_masking/full_no_TPSI/genome.fas.masked",
-        "results_" + HAP + "/01_masking/full_no_TPSI/genome.fas.out",
-        "results_" + HAP + "/01_masking/full_no_TPSI/genome.fas.align"
+        "results_" + HAP + "/01_masking/full/genome.fas.masked",
+        "results_" + HAP + "/01_masking/full/genome.fas.out",
+        "results_" + HAP + "/01_masking/full/genome.fas.align"
     params:
         database="MyDatabase",
-        workdir="results_" + HAP + "/01_masking/full_no_TPSI", # no trailing slash
+        workdir="results_" + HAP + "/01_masking/full", # no trailing slash
         engine="ncbi",
         run_hap=HAP
     threads: 
@@ -317,9 +318,9 @@ rule repeat_masker_final:
 
 rule repeat_masker2gff:
     input:
-        "results_" + HAP + "/01_masking/full_no_TPSI/genome.fas.out"
+        "results_" + HAP + "/01_masking/full/genome.fas.out"
     output:
-        "results_" + HAP + "/01_masking/full_no_TPSI/RMasker_custom_blasted_final_masked.gff3"
+        "results_" + HAP + "/01_masking/full/RMasker_custom_blasted_final_masked.gff3"
     container: 
         config["containers"]["repeat_masker"]
     shell: """
@@ -332,11 +333,11 @@ rule final_masking:
     input:
         gffs=("results_" + HAP + "/01_masking/trf.gff3",        
         "results_" + HAP + "/01_masking/dustmasker.gff3",
-        "results_" + HAP + "/01_masking/full_no_TPSI/RMasker_custom_blasted_final_masked.gff3"),
+        "results_" + HAP + "/01_masking/full/RMasker_custom_blasted_final_masked.gff3"),
         genome=config["genome"]["file"]
     output:
-        bed="results_" + HAP + "/01_masking/full_no_TPSI/all_repeats.bed",
-        genome="results_" + HAP + "/01_masking/full_no_TPSI/genome.masked.fa"
+        bed="results_primary/01_masking/all_repeats.bed",
+        genome="results_" + HAP + "/01_masking/genome.masked.fa"
     conda:
         "../envs/bedtools.yaml"
     threads:
