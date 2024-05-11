@@ -226,7 +226,7 @@ rule filter_uniprot_fasta:
         min(workflow.cores,20)
     shell: """
         cd {params.dir}
-        gaas_fasta_removeSeqFromIDlist.pl -f {params.prot_path} -l {input.prot_list} -o ../../../{output.prot_filtered}
+        gaas_fasta_removeSeqFromIDlist.pl -f ../../../{params.prot_path} -l ../../../{input.prot_list} -o ../../../{output.prot_filtered}
     """
 
 
